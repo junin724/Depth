@@ -69,7 +69,7 @@ function LoadCustomInstance(source, parent)
 end
 
 -- 🔽 Tải Frost entity từ GitHub
-local s = LoadCustomInstance("https://github.com/junin724/Depth/raw/refs/heads/main/frostbite%20new.rbxm", workspace)
+local s = LoadCustomInstance("https://raw.githubusercontent.com/Francisco1692qzd/Doors-Hotel-Hardcore/main/newFrostbite.rbxm", workspace)
 if not s then
     warn("Không thể tải Frost entity.")
     return
@@ -206,3 +206,4 @@ tweenservice:Create(frost, TweenInfo.new(5), {
     Contrast = 0
 }):Play()
 wait(5)
+
