@@ -30,7 +30,7 @@ TweenService:Create(cc, TweenInfo.new(6), {TintColor = Color3.fromRGB(255,255,25
 local entity = spawner.Create({
     Entity = {
         Name = "Ripper",
-        Asset = "rbxassetid://12234498940",
+        Asset = "https://github.com/junin724/Depth/raw/refs/heads/main/ripper%20new.rbxm",
         HeightOffset = 0
     },
 
