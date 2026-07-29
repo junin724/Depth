@@ -20,7 +20,7 @@ function CustomGitSound(soundlink, vol, filename)
 
     sound.Parent = workspace
 
-    sound.Name = "reboundspawn"
+    sound.Name = "rebound sound"
 
     sound.Volume = 1
 
@@ -30,7 +30,7 @@ function CustomGitSound(soundlink, vol, filename)
 
 end
 
-CustomGitSound("https://github.com/Anctarus7105/Custom-Sounds/raw/main/ReboundWarning.mp3", 1, "reboundspawn")
+CustomGitSound("https://github.com/junin724/Depth/raw/refs/heads/main/rebound%20sound.rbxm", 1, "reboundspawn")
 
 wait(0)
 local maxRebounds = 3
