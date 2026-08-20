@@ -1,0 +1,217 @@
+---====== Load spawner ======---
+
+local spawner = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Doors/Entity%20Spawner/V2/Source.lua"))()
+
+---====== Services ======---
+
+local Players = game:GetService("Players")
+local Lighting = game:GetService("Lighting")
+local TweenService = game:GetService("TweenService")
+local ReSt = game:GetService("ReplicatedStorage")
+local Plr = Players.LocalPlayer
+
+---====== Global Helper Functions ======---
+
+local function GitAud(soundgit, filename)
+    local url = soundgit
+    local FileName = filename
+    writefile(FileName .. ".mp3", game:HttpGet(url))
+    return (getcustomasset or getsynasset)(FileName .. ".mp3")
+end
+
+local function CustomGitSound(soundlink, vol, filename, soundNameParent, loop)
+    local sound = Instance.new("Sound")
+    sound.SoundId = GitAud(soundlink, filename)
+    sound.Parent = workspace
+    if soundNameParent then
+        sound.Name = soundNameParent
+    end
+    sound.Volume = vol
+    if loop then
+        sound.Looped = true
+    end
+    sound:Play()
+    return sound
+end
+
+---====== Lighting RED ======---
+
+local cc = Lighting:FindFirstChild("MainColorCorrection")
+if not cc then
+    cc = Instance.new("ColorCorrectionEffect")
+    cc.Name = "MainColorCorrection"
+    cc.Parent = Lighting
+end
+
+cc.TintColor = Color3.fromRGB(255, 0, 0)
+cc.Contrast = 1
+
+TweenService:Create(cc, TweenInfo.new(1.5), {Contrast = 0}):Play()
+TweenService:Create(cc, TweenInfo.new(6), {TintColor = Color3.fromRGB(255, 255, 255)}):Play()
+
+---====== Create entity ======---
+
+local entity = spawner.Create({
+    Entity = {
+        Name = "Ripper",
+        Asset = "https://github.com/junin724/Depth/raw/refs/heads/main/ri9ewpp.rbxm",
+        HeightOffset = 0
+    },
+
+    Lights = {
+        Flicker = {
+            Enabled = false,
+            Duration = 1
+        },
+        Shatter = true,
+        Repair = false
+    },
+
+    CameraShake = {
+        Enabled = true,
+        Range = 50,
+        Values = {2.5, 20, 0.5, 1}
+    },
+
+    Movement = {
+        Speed = 100,
+        Delay = 4,
+        Reversed = false
+    },
+
+    Rebounding = {
+        Enabled = false
+    },
+
+    Damage = {
+        Enabled = true,
+        Range = 40,
+        Amount = 125
+    },
+
+    Crucifixion = {
+        Enabled = false
+    },
+
+    Death = {
+        Type = "Guiding",
+        Hints = {"You died who you call Ripper...", "You can tell his presence by the lights and his scream.", "Hide when does this!"},
+        Cause = "Ripper"
+    }
+})
+
+---====== Callbacks ======---
+
+entity:SetCallback("OnSpawned", function()
+    print("[RIPPER] Spawned")
+end)
+
+entity:SetCallback("OnStartMoving", function()
+    print("[RIPPER] Moving")
+    CustomGitSound(
+        "https://github.com/Kotyara19k-Doorsspawner/Random-files/raw/main/Y2meta.app%20-%20Ripper%20Has%20Moving%20Sound%20(320%20kbps).mp3?raw=true", 
+        10, 
+        "rippermoving", 
+        "rippermoving"
+    )
+end)
+
+entity:SetCallback("OnDamagePlayer", function(newHealth)
+    if newHealth <= 0 then
+        if ReSt:FindFirstChild("GameStats") then
+            local stats = ReSt.GameStats:FindFirstChild("Player_" .. Plr.Name)
+            if stats then
+                stats.Total.DeathCause.Value = "Ripper"
+            end
+        end
+        
+        if workspace:FindFirstChild("rippermoving") then
+            workspace.rippermoving:Stop()
+        end
+        
+        if workspace:FindFirstChild("Ripper") then
+            workspace.Ripper:Destroy()
+        end
+
+        local character = Plr.Character
+        if character and character:FindFirstChild("Humanoid") then
+            character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated, false)
+            character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics, false)
+            character.HumanoidRootPart.Anchored = true
+        end
+
+        CustomGitSound("https://github.com/Kotyara19k-Doorsspawner/Random-files/raw/main/Y2meta.app%20-%20Doors%20HardCore%20Mode_%201%20ripper%20part%20sound%20(320%20kbps).mp3", 1, "Ripper5Sound")
+        task.wait(1.5)
+        
+        CustomGitSound("https://github.com/Kotyara19k-Doorsspawner/Random-files/raw/main/Y2meta.app%20-%20Doors%20Hardcore%20Mode_%20Ripperscare%20part%202%20sound%20(320%20kbps).mp3", 1, "Ripper6Sound")
+        
+        local mainUI = Plr.PlayerGui:FindFirstChild("MainUI")
+        if mainUI and mainUI:FindFirstChild("Drip") then
+            local drip = mainUI.Drip
+            drip.Image = "rbxassetid://236542974"
+            
+            drip.Visible = true
+            task.wait(0.3)
+            drip.Visible = false
+            task.wait(0.1)
+            drip.Visible = true
+            task.wait(0.2)
+            drip.Visible = true
+            task.wait(0.2)
+            drip.Visible = false
+            task.wait(0.3)
+            drip.Visible = true
+            task.wait(0.2)
+            drip.Visible = false
+            task.wait(0.20)
+        end
+
+        if character and character:FindFirstChild("Humanoid") then
+            character.Humanoid.Health = character.Humanoid.Health - 100
+        end
+
+        if ReSt:FindFirstChild("GameStats") and ReSt.GameStats:FindFirstChild("Player_" .. Plr.Name) then
+            ReSt.GameStats["Player_" .. Plr.Name].Total.DeathCause.Value = "Ripper"
+        end
+
+        local func, setupval, getinfo, typeof, getgc, next = nil, debug.setupvalue or setupvalue, debug.getinfo or getinfo, typeof, getgc, next
+
+        for i, v in next, getgc(false) do
+            if typeof(v) == "function" then
+                local info = getinfo(v)
+                if info.currentline == 54 and info.nups == 2 and info.is_vararg == 0 then
+                    func = v
+                    break
+                end
+            end
+        end
+
+        if func then
+            local function DeathHint(hints, typeStr: string)
+                setupval(func, 1, hints)
+                if typeStr ~= nil then
+                    setupval(func, 2, typeStr)
+                end
+            end
+        end
+    end
+end)
+
+entity:SetCallback("OnDespawned", function()
+    print("[RIPPER] Despawned")
+    ---====== Load achievement giver ======---
+    local achievementGiver = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Doors/Custom%20Achievements/Source.lua"))()
+
+    ---====== Display achievement ======---
+    achievementGiver({
+        Title = "Torn Apart",
+        Desc = "Dont leave to early..",
+        Reason = "Encounter Ripper.",
+        Image = "rbxassetid://17702317077"
+    })
+end)
+
+---====== Run entity ======---
+
+entity:Run()
+
